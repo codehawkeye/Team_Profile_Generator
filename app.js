@@ -18,7 +18,7 @@ function appMenu() {
                 type: "input",
                 name: "managerName",
                 message: "What is your manager's name?"
-                validate: 
+                 
                 
 
             },
@@ -56,6 +56,37 @@ function appMenu() {
 
 
 appMenu()
+
+function addTeamMember() {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "Would you like to add team members?",
+            choices: ["Engineer", "Intern"]
+
+        },
+    ])
+        .then(answers => {
+            if (answers.employee === 'Engineer') {
+            EngineerQuestions();
+            } else if
+                (answers.employee === 'Intern') {
+                InternQuestions();
+            } else {
+                console.log('OK Builing Team now.....')
+            }                
+            
+        })
+
+
+}
+
+Cons
+
+
+
+
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
