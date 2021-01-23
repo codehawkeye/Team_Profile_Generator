@@ -17,8 +17,7 @@ function appMenu() {
             {
                 type: "input",
                 name: "managerName",
-                message: "What is your manager's name?"
-                 
+                message: "What is your manager's name?"                 
                 
 
             },
@@ -57,31 +56,137 @@ function appMenu() {
 
 appMenu()
 
-function addTeamMember() {
+async function addTeamMember() {
     inquirer.prompt([
         {
             type: "list",
             message: "Would you like to add team members?",
-            choices: ["Engineer", "Intern"]
+            choices: ["Engineer", "Intern", "Build Team"]
 
         },
     ])
         .then(answers => {
             if (answers.employee === 'Engineer') {
-            EngineerQuestions();
+                EngineerQuestions();
             } else if
                 (answers.employee === 'Intern') {
                 InternQuestions();
             } else {
+                let data = render(teamArray);
                 console.log('OK Builing Team now.....')
-            }                
+                fs.writeFile(outputPath, data, (err) => {
+                    if (err) throw err;
+                    console.log('Team Complete!');
+                } 
+            }
+            
             
         })
 
 
-}
 
-Cons
+    if (answers === 'Engineer') {
+        inquirer.prompt([
+
+            {
+                type: "input",
+                name: "engineerName",
+                message: "What is your Engineer's name?"
+            
+
+            },
+            {
+                type: "input",
+                name: "engineerId",
+                message: "What is your Engineers's id?",
+                // validate user input here
+            },
+            {
+                type: "input",
+                name: "engineerEmail",
+                message: " What is the Engineer's email?",
+                // validate user input here
+            
+            
+            },
+            {
+                type: "input",
+                name: "engineergitHubUser",
+                message: " What is your Engineers GitHub?",
+                // validate user input here 
+       
+
+            },
+        ])
+            .then(function (answers) {
+                let engineer = new Engineer(answers.name, answers.engineerId, answers.engineergitHubUser);
+                newTeamArray.push(engineer);
+                addTeamMember()
+
+            })
+            .catch(function (err) {
+                console.log(`Somthing went wrong!${err}`);
+            });
+         
+        
+    } else if (answers === 'Intern') {
+        inquirer.prompt([
+
+            {
+                type: "input",
+                name: "InternName",
+                message: "What is your Intern's name?",
+            
+
+            },
+            {
+                type: "input",
+                name: "InternId",
+                message: "What is your Intern's id?",
+                // validate user input here
+            },
+            {
+                type: "input",
+                name: "InternEmail",
+                message: " What is the Interns's email?",
+                // validate user input here
+            
+            
+            },
+            {
+                type: "input",
+                name: "InternSchool",
+                message: " What school does your Intern attend?",
+                // validate user input here
+            
+            },
+        ])
+            .then(function (answers) {
+                let intern = new Intern(answers.name, answers.internId, answers.internEmail, answers.internSchool);
+                newTeamArray.push(intern);
+                addTeamMember()
+    
+            })
+            .catch(function (err) {
+                console.log(`Somthing went wrong!${err}`);
+            });
+        
+    } else { buildTeam() }
+
+
+    } try catch (err) {
+    console.log(err);
+}
+        
+addTeamMember();
+
+
+
+
+function buildTeam() {
+    fs.writeFileSync(outputPath, render(newTeamArray),)
+} 
+
 
 
 
