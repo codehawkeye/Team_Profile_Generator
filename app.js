@@ -17,7 +17,7 @@ function appMenu() {
             {
                 type: "input",
                 name: "managerName",
-                message: "What is your manager's name?"                 
+                message: "What is your manager's name?"
                 
 
             },
@@ -49,8 +49,6 @@ function appMenu() {
         });
     }
     // activate manager function
-    createManager()
-
 }
 
 
