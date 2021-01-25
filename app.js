@@ -9,6 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { create } = require("domain");
 
 function appMenu() {
     function createManager() {
@@ -46,28 +47,25 @@ function appMenu() {
         ]).then(answers => {
             const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managersOfficeNumber);
             console.log(manager);
+            addTeamMember()
         });
     }
-    // activate manager function
-}
 
 
-appMenu()
 
-async function addTeamMember() {
-    inquirer.prompt([
-        {
-            type: "list",
-            message: "Would you like to add team members?",
-            choices: ["Engineer", "Intern", "Build Team"]
 
-        },
-    ])
-        .then(answers => {
+    async function addTeamMember() {
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Would you like to add team members?",
+                choices: ["Engineer", "Intern", "Build Team"]
+
+            }
+        ]) .then(answers => {
             if (answers.employee === 'Engineer') {
                 EngineerQuestions();
-            } else if
-                (answers.employee === 'Intern') {
+            } else if (answers.employee === 'Intern') {
                 InternQuestions();
             } else {
                 let data = render(teamArray);
@@ -76,119 +74,128 @@ async function addTeamMember() {
                     if (err) throw err;
                     console.log('Team Complete!');
                 } 
+        
             }
-            
-            
         })
-
-
-
-    if (answers === 'Engineer') {
-        inquirer.prompt([
-
-            {
-                type: "input",
-                name: "engineerName",
-                message: "What is your Engineer's name?"
-            
-
-            },
-            {
-                type: "input",
-                name: "engineerId",
-                message: "What is your Engineers's id?",
-                // validate user input here
-            },
-            {
-                type: "input",
-                name: "engineerEmail",
-                message: " What is the Engineer's email?",
-                // validate user input here
+ 
+        
+        
             
             
-            },
-            {
-                type: "input",
-                name: "engineergitHubUser",
-                message: " What is your Engineers GitHub?",
-                // validate user input here 
+        
+
+
+
+        if (answers.employee === 'Engineer') {
+            inquirer.prompt([
+
+                {
+                    type: "input",
+                    name: "engineerName",
+                    message: "What is your Engineer's name?"
+            
+
+                },
+                {
+                    type: "input",
+                    name: "engineerId",
+                    message: "What is your Engineers's id?",
+                    // validate user input here
+                },
+                {
+                    type: "input",
+                    name: "engineerEmail",
+                    message: " What is the Engineer's email?",
+                    // validate user input here
+            
+            
+                },
+                {
+                    type: "input",
+                    name: "engineergitHubUser",
+                    message: " What is your Engineers GitHub?",
+                    // validate user input here 
        
 
-            },
-        ])
-            .then(function (answers) {
-                let engineer = new Engineer(answers.name, answers.engineerId, answers.engineergitHubUser);
-                newTeamArray.push(engineer);
-                addTeamMember()
+                },
+            ])
+                .then(function (answers) {
+                    let engineer = new Engineer(answers.name, answers.engineerId, answers.engineergitHubUser);
+                    newTeamArray.push(engineer);
+                    addTeamMember()
 
-            })
-            .catch(function (err) {
-                console.log(`Somthing went wrong!${err}`);
-            });
+                })
+                .catch(function (err) {
+                    console.log(`Somthing went wrong!${err}`);
+                });
          
         
-    } else if (answers === 'Intern') {
-        inquirer.prompt([
+        } else if (answers === 'Intern') {
+            inquirer.prompt([
 
-            {
-                type: "input",
-                name: "InternName",
-                message: "What is your Intern's name?",
+                {
+                    type: "input",
+                    name: "InternName",
+                    message: "What is your Intern's name?",
             
 
-            },
-            {
-                type: "input",
-                name: "InternId",
-                message: "What is your Intern's id?",
-                // validate user input here
-            },
-            {
-                type: "input",
-                name: "InternEmail",
-                message: " What is the Interns's email?",
-                // validate user input here
+                },
+                {
+                    type: "input",
+                    name: "InternId",
+                    message: "What is your Intern's id?",
+                    // validate user input here
+                },
+                {
+                    type: "input",
+                    name: "InternEmail",
+                    message: " What is the Interns's email?",
+                    // validate user input here
             
             
-            },
-            {
-                type: "input",
-                name: "InternSchool",
-                message: " What school does your Intern attend?",
-                // validate user input here
+                },
+                {
+                    type: "input",
+                    name: "InternSchool",
+                    message: " What school does your Intern attend?",
+                    // validate user input here
             
-            },
-        ])
-            .then(function (answers) {
-                let intern = new Intern(answers.name, answers.internId, answers.internEmail, answers.internSchool);
-                newTeamArray.push(intern);
-                addTeamMember()
+                },
+            ])
+                .then(function (answers) {
+                    let intern = new Intern(answers.name, answers.internId, answers.internEmail, answers.internSchool);
+                    newTeamArray.push(intern);
+                    addTeamMember()
     
-            })
-            .catch(function (err) {
-                console.log(`Somthing went wrong!${err}`);
-            });
+                })
+                .catch(function (err) {
+                    console.log(`Somthing went wrong!${err}`);
+                });
         
-    } else { buildTeam() }
+        } else { buildTeam() }
 
 
-    } try catch (err) {
-    console.log(err);
+        try { } catch (err) {
+            console.log(err);
+        }
+     
+    
+        
+       
+
+
+
+
+        function buildTeam() {
+            fs.writeFileSync(outputPath, render(newTeamArray),)
+        }
+
+createManager()
+    
 }
-        
-addTeamMember();
-
-
-
-
-function buildTeam() {
-    fs.writeFileSync(outputPath, render(newTeamArray),)
-} 
-
-
-
-
-
+    
+appMenu()
+    
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -211,4 +218,4 @@ function buildTeam() {
 // and Intern classes should all extend from a class named Employee; see the directions
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+// for the provided render function to work! 
