@@ -4,6 +4,7 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const newTeamArray = [];
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
@@ -38,15 +39,17 @@ function appMenu() {
             },
             {
                 type: "input",
-                name: "managersOficeNumber",
+                name: "managersOfficeNumber",
                 message: " What is your managers's office number?",
-                // validate user input here 
+                // validate user input here ])
             }
             
         
         ]).then(answers => {
             const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managersOfficeNumber);
             console.log(manager);
+            newTeamArray.push(manager);
+            
             addTeamMember()
         });
     }
@@ -55,100 +58,106 @@ function appMenu() {
 
 
     async function addTeamMember() {
+        console.log(newTeamArray)
         inquirer.prompt([
             {
                 type: "list",
+                name: "employee",
                 message: "Would you like to add team members?",
                 choices: ["Engineer", "Intern", "Build Team"]
 
             }
-        ]) .then(answers => {
+        ]).then(answers => {
             if (answers.employee === 'Engineer') {
                 EngineerQuestions();
             } else if (answers.employee === 'Intern') {
                 InternQuestions();
             } else {
-                let data = render(teamArray);
-                console.log('OK Builing Team now.....')
-                fs.writeFile(outputPath, data, (err) => {
-                    if (err) throw err;
-                    console.log('Team Complete!');
-                } 
+                buildTeam();
+                // let data = render(teamArray);
+                // console.log('OK Builing Team now.....')
+                // fs.writeFile(outputPath, data, (err) => {
+                //     if (err) throw err;
+                //     console.log('Team Complete!');
+                // }) 
         
             }
         })
  
+    }  
         
+                                
+
+
+    function EngineerQuestions() {
+        console.log("creating Engineer");
         
-            
-            
-        
+       
+        inquirer.prompt([
 
-
-
-        if (answers.employee === 'Engineer') {
-            inquirer.prompt([
-
-                {
-                    type: "input",
-                    name: "engineerName",
-                    message: "What is your Engineer's name?"
+            {
+                type: "input",
+                name: "engineerName",
+                message: "What is your Engineer's name?"
             
 
-                },
-                {
-                    type: "input",
-                    name: "engineerId",
-                    message: "What is your Engineers's id?",
-                    // validate user input here
-                },
-                {
-                    type: "input",
-                    name: "engineerEmail",
-                    message: " What is the Engineer's email?",
-                    // validate user input here
+            },
+            {
+                type: "input",
+                name: "engineerId",
+                message: "What is your Engineers's id?",
+                // validate user input here
+            },
+            {
+                type: "input",
+                name: "engineerEmail",
+                message: " What is the Engineer's email?",
+                // validate user input here
             
             
-                },
-                {
-                    type: "input",
-                    name: "engineergitHubUser",
-                    message: " What is your Engineers GitHub?",
-                    // validate user input here 
+            },
+            {
+                type: "input",
+                name: "engineergitHubUser",
+                message: " What is your Engineers GitHub?",
+                // validate user input here 
        
 
-                },
-            ])
-                .then(function (answers) {
-                    let engineer = new Engineer(answers.name, answers.engineerId, answers.engineergitHubUser);
-                    newTeamArray.push(engineer);
-                    addTeamMember()
+            },
 
-                })
-                .catch(function (err) {
-                    console.log(`Somthing went wrong!${err}`);
-                });
+        ])
+            
+            .then(function (answers) {
+                let engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineergitHubUser,);
+                newTeamArray.push(engineer);
+                addTeamMember()
+
+            })
+            .catch(function (err) {
+                console.log(`Somthing went wrong!${err}`);
+            });
+    }    
          
-        
-        } else if (answers === 'Intern') {
+        function InternQuestions() {
+            console.log("congrats testing Intern");
             inquirer.prompt([
 
                 {
                     type: "input",
-                    name: "InternName",
+                    name: "internName",
                     message: "What is your Intern's name?",
             
 
                 },
                 {
                     type: "input",
-                    name: "InternId",
+                    name: "internId",
                     message: "What is your Intern's id?",
                     // validate user input here
                 },
                 {
                     type: "input",
-                    name: "InternEmail",
+                    name: "internEmail",
                     message: " What is the Interns's email?",
                     // validate user input here
             
@@ -156,14 +165,14 @@ function appMenu() {
                 },
                 {
                     type: "input",
-                    name: "InternSchool",
+                    name: "internSchool",
                     message: " What school does your Intern attend?",
                     // validate user input here
             
                 },
             ])
                 .then(function (answers) {
-                    let intern = new Intern(answers.name, answers.internId, answers.internEmail, answers.internSchool);
+                    let intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
                     newTeamArray.push(intern);
                     addTeamMember()
     
@@ -172,13 +181,10 @@ function appMenu() {
                     console.log(`Somthing went wrong!${err}`);
                 });
         
-        } else { buildTeam() }
-
-
-        try { } catch (err) {
-            console.log(err);
         }
-     
+    
+            
+    
     
         
        
@@ -186,7 +192,8 @@ function appMenu() {
 
 
 
-        function buildTeam() {
+    function buildTeam() {
+        console.log(newTeamArray);
             fs.writeFileSync(outputPath, render(newTeamArray),)
         }
 
