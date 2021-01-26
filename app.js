@@ -191,7 +191,7 @@ function appMenu() {
 
 
 
-
+//  builds team, renders array but need to render HTML,
     function buildTeam() {
         console.log(newTeamArray);
             fs.writeFileSync(outputPath, render(newTeamArray),)
