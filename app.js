@@ -165,14 +165,14 @@ function appMenu() {
                 },
                 {
                     type: "input",
-                    name: "internSchool",
+                    name: "school",
                     message: " What school does your Intern attend?",
                     // validate user input here
             
                 },
             ])
                 .then(function (answers) {
-                    let intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
+                    let intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.school);
                     newTeamArray.push(intern);
                     addTeamMember()
     
